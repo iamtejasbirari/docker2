@@ -1,0 +1,36 @@
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-frontend
+  template:
+    metadata:
+      labels:
+        app: react-frontend
+    spec:
+      imagePullSecrets:
+      - name: ecr-secret
+      containers:
+      - image: 084375542210.dkr.ecr.eu-north-1.amazonaws.com/docker2:docker2-client
+        name: docker2-client
+        ports:
+        - containerPort: 80              
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker2-client-service
+spec:
+  selector:
+    app: react-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort

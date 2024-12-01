@@ -1,0 +1,39 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: node-backend
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: node-backend
+    template:
+        metadata:
+            labels:
+                app: node-backend
+        spec:
+            imagePullSecrets:
+            - name: ecr-secret
+            containers:
+            - image: 084375542210.dkr.ecr.eu-north-1.amazonaws.com/docker2:docker2-server
+              name: docker2-server
+              ports:
+              - containerPort: 5000   
+              env:
+              - name: DB_PASSWORD
+                value: password
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+    name: node-backend-service
+spec:
+    selector:
+        app: node-backend
+    ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+    type: ClusterIP
