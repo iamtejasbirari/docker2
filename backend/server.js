@@ -21,7 +21,7 @@ const db = pool.promise();
 // Middleware
 app.use(express.json());  // To parse JSON bodies
 app.use(cors({
-  origin: 'http://localhost',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));  // Enable Cross-Origin Resource Sharing (CORS)
 
